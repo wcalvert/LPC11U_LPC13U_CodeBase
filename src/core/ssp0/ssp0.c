@@ -120,6 +120,11 @@ void ssp0Init(void)
   LPC_IOCON->PIO0_9 &= ~0x07;
   LPC_IOCON->PIO0_9 |= 0x01;
 
+  #ifdef CFG_SDCARD
+  // Configure slave select an output.
+  LPC_GPIO->DIR[CFG_SDCARD_SSELPORT] |= (1 << CFG_SDCARD_SSELPIN);
+  #endif
+
   /* No LPC_IOCON->SCKLOC register on LPC11Uxx/13Uxx? */
   #if (CFG_SSP_SCK0_LOCATION == CFG_SSP_SCK0_1_29)
     /* Set 1.29 to SSP SCK0 (0.6 is often used by USB and 0.10 for SWD) */
