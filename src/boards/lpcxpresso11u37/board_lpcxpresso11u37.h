@@ -252,8 +252,8 @@ extern "C" {
     CFG_LED_OFF               The pin state to turn the LED off (0 = low, 1 = high)
 
     -----------------------------------------------------------------------*/
-    #define CFG_LED_PORT                  (0)
-    #define CFG_LED_PIN                   (7)
+    #define CFG_LED_PORT                  (1)
+    #define CFG_LED_PIN                   (24)
     #define CFG_LED_ON                    (1)
     #define CFG_LED_OFF                   (0)
 /*=========================================================================*/
@@ -316,13 +316,13 @@ extern "C" {
 
     // Select the appropriate pin locations here
     #define CFG_SSP_SCK0_LOCATION       (CFG_SSP_SCK0_1_29)
-    #define CFG_SSP_MISO1_LOCATION      (CFG_SSP_MISO1_1_21)
-    #define CFG_SSP_MOSI1_LOCATION      (CFG_SSP_MOSI1_1_22)
-    #define CFG_SSP_SCK1_LOCATION       (CFG_SSP_SCK1_1_20)
+    #define CFG_SSP_MISO1_LOCATION      (CFG_SSP_MISO1_0_22)
+    #define CFG_SSP_MOSI1_LOCATION      (CFG_SSP_MOSI1_0_21)
+    #define CFG_SSP_SCK1_LOCATION       (CFG_SSP_SCK1_1_15)
 
     // Set the phase and polarity for SSP0 and SSP1
     #define CFG_SSP_CPOL0               (0)
-    #define CFG_SSP_CPHA0               (1)   /* CC3000 = Mode 1 */
+    #define CFG_SSP_CPHA0               (0)   /* CC3000 = Mode 1 */
     #define CFG_SSP_CPOL1               (0)
     #define CFG_SSP_CPHA1               (0)
 /*=========================================================================*/
@@ -498,15 +498,15 @@ extern "C" {
     NOTE:                     All config settings for FAT32 are defined
                               in ffconf.h
     -----------------------------------------------------------------------*/
-    // #define CFG_SDCARD
-    #define CFG_SDCARD_READONLY         (1)   // Must be 0 or 1
+    #define CFG_SDCARD
+    #define CFG_SDCARD_READONLY         (0)   // Must be 0 or 1
     #define CFG_SDCARD_SPIPORT          (0)
-    #define CFG_SDCARD_SSELPORT         (0)
-    #define CFG_SDCARD_SSELPIN          (0)
-    #define CFG_SDCARD_CDPORT           (0)
-    #define CFG_SDCARD_CDPIN            (0)
-    #define CFG_SDCARD_ENBLPORT         (0)
-    #define CFG_SDCARD_ENBLPIN          (0)
+    #define CFG_SDCARD_SSELPORT         (1)     // 1_12 is SSP0 slave select. 1_23 is SSP1 slave select.
+    #define CFG_SDCARD_SSELPIN          (12)
+    #define CFG_SDCARD_CDPORT           (1)     // 1_9 is SSP0 card detect.
+    #define CFG_SDCARD_CDPIN            (9)
+    #define CFG_SDCARD_ENBLPORT         (1)     // 1_26 is the blue LED, because there is no SD card enable feature on the board.
+    #define CFG_SDCARD_ENBLPIN          (26)
 
     #ifdef CFG_SDCARD
       #if !((CFG_SDCARD_READONLY == 0) || (CFG_SDCARD_READONLY == 1))
@@ -682,7 +682,7 @@ extern "C" {
       #define CFG_USB_HID_GENERIC
       #define CFG_USB_HID_GENERIC_REPORT_SIZE (64)
 
-      // #define CFG_USB_MSC
+      #define CFG_USB_MSC
 
       // #define CFG_USB_CUSTOM_CLASS
 
