@@ -4,7 +4,6 @@
 /* Only rcvr_spi(), xmit_spi(), disk_timerproc() and some macros         */
 /* are platform dependent.                                               */
 /*-----------------------------------------------------------------------*/
-
 #include "projectconfig.h"
 
 #ifdef CFG_SDCARD
@@ -294,7 +293,6 @@ BYTE send_cmd (
         do
                 res = rcvr_spi();
         while ((res & 0x80) && --n);
-
         return res;                        /* Return with the response value */
 }
 
@@ -330,10 +328,9 @@ DSTATUS disk_initialize (
 
         // Wait 20ms for card detect to stabilise
         delay(20);
-
         if (drv) return STA_NOINIT;                        /* Supports only single drive */
-        if (Stat & STA_NODISK) return Stat;        /* No card in the socket */
 
+        if (Stat & STA_NODISK) return Stat;        /* No card in the socket */
         power_on();                                                        /* Force socket power on */
         #if CFG_SDCARD_SPIPORT == 0
           ssp0ClockSlow();
@@ -378,7 +375,6 @@ DSTATUS disk_initialize (
         } else {                        /* Initialization failed */
                 power_off();
         }
-
         return Stat;
 }
 
@@ -632,20 +628,26 @@ void disk_timerproc (void)
   n = pv;
   pv = 0;
   /* Sample card detect pin */
+  #ifdef CFG_BRD_LPCXPRESSO_LPC11U37
+  /* Card detect is inverted on this socket for some reason. */
+  pv = !GPIOGetPinValue(CFG_SDCARD_CDPORT, CFG_SDCARD_CDPIN);
+  #else
   pv = GPIOGetPinValue(CFG_SDCARD_CDPORT, CFG_SDCARD_CDPIN);
+  #endif
 
   /* Have contacts stabled? */
   if (n == pv)
   {
+    
     s = Stat;
 
     /* write protect NOT supported */
 
     /* check card detect */
     if (!pv)                            /* (Socket empty) */
-      s |= (STA_NODISK | STA_NOINIT);
+        s |= (STA_NODISK | STA_NOINIT);
     else                            /* (Card inserted) */
-      s &= ~STA_NODISK;
+        s &= ~STA_NODISK;
 
     Stat = s;
   }
