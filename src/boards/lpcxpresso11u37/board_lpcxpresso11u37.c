@@ -88,6 +88,7 @@
 #endif
 
 #ifdef CFG_SDCARD
+#include "drivers/storage/fatfs/integer.h"
 /**************************************************************************/
 /*!
     Handles timestamp requests for SD cards (adjust depending on if you
