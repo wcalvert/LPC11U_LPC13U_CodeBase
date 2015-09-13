@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "libusb.h"
-#include <windows.h>
+#include <libusb-1.0/libusb.h>
+#include <unistd.h>
 
 #define VID             (0x1FC9)
-#define PID             (0x2020)  
+#define PID             (0x2029)  
 #define ENDPOINT_OUT    (0x04)
 #define ENDPOINT_IN     (0x81)
-#define INTERFACE_NUM   (0)
+#define INTERFACE_NUM   (3)
 
 int main(void)
 {
@@ -49,7 +49,7 @@ int main(void)
 
     /* check response */
     unsigned char buffer_in[64] = { 0 };
-    if(libusb_bulk_transfer(lpcdevice, ENDPOINT_IN, buffer_in, 64, &transferred, 0))
+    if(!libusb_bulk_transfer(lpcdevice, ENDPOINT_IN, buffer_in, 64, &transferred, 0))
     {
       printf("\nError in read! received = %d\n", transferred);    
       return -1;    
@@ -66,7 +66,7 @@ int main(void)
         }
       }
     }
-		Sleep(1000);
+		sleep(1);
   }
 
   /* Free up the device list and close libusbx */
